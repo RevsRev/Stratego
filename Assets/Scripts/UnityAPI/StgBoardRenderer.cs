@@ -2,19 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardRenderer : MonoBehaviour
+public class StgBoardRenderer : MonoBehaviour
 {
     private StgBoard board;
+    public StgTileHighlight tileHighlightPrefab { get; private set; }
+    public StgTileHighlight tileHighlight { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        //TODO - need to get the client to tell us what board we are rendering.
+        initTileHighlight();
+    }
+
+    private void initTileHighlight()
+    {
+        Vector2Int gridPoint = Geometry.GridPoint(0, 0);
+        Vector3 point = Geometry.PointFromGrid(gridPoint);
+        tileHighlight = Instantiate(tileHighlightPrefab, point, Quaternion.identity, gameObject.transform);
+        tileHighlight.active = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        updateTileHighlight();
+
+    }
+
+    private void updateTileHighlight()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 point = hit.point;
+            Vector2Int gridPoint = Geometry.GridFromPoint(point);
+
+            tileHighlight.enabled = true;
+            tileHighlight.transform.position =  Geometry.PointFromGrid(gridPoint);
+        }
+        else
+        {
+            tileHighlight.enabled = false;
+        }
     }
 }

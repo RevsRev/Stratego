@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class StgPieceRenderer : MonoBehaviour
+public class StgTileHighlight : MonoBehaviour
 {
-    private StgAbstractPiece piece;
+    public bool active { get; set; } = false;
 
-    // Start is called before the first frame update
+    //TOOD - See if we care about adding a color!
+    private Color highlightColor;
+
     void Start()
     {
         //TODO - need to work out what piece this instance relates to!
@@ -20,6 +22,4 @@ public class StgPieceRenderer : MonoBehaviour
     {
         //TODO
     }
-
-
 }

@@ -246,7 +246,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1630054055}
   - component: {fileID: 1630054054}
-  - component: {fileID: 1630054053}
   - component: {fileID: 1630054056}
   m_Layer: 0
   m_Name: StrategoBoard
@@ -255,19 +254,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1630054053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630054052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d2b4a9cc804bc84383e14bad4e99fca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 0}
 --- !u!212 &1630054054
 SpriteRenderer:
   m_ObjectHideFlags: 0
