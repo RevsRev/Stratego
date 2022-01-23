@@ -5,12 +5,13 @@ using UnityEngine;
 public class StgBoardRenderer : MonoBehaviour
 {
     private StgBoard board;
-    public StgTileHighlight tileHighlightPrefab { get; private set; }
-    public StgTileHighlight tileHighlight { get; private set; }
+    public GameObject tileHighlightPrefab;
+    public GameObject tileHighlight { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Initing board renderer");
         initTileHighlight();
     }
 
@@ -26,7 +27,6 @@ public class StgBoardRenderer : MonoBehaviour
     void Update()
     {
         updateTileHighlight();
-
     }
 
     private void updateTileHighlight()
@@ -39,12 +39,12 @@ public class StgBoardRenderer : MonoBehaviour
             Vector3 point = hit.point;
             Vector2Int gridPoint = Geometry.GridFromPoint(point);
 
-            tileHighlight.enabled = true;
+            tileHighlight.active = true;
             tileHighlight.transform.position =  Geometry.PointFromGrid(gridPoint);
         }
         else
         {
-            tileHighlight.enabled = false;
+            tileHighlight.active = false;
         }
     }
 }

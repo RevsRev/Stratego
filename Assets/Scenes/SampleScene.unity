@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -246,6 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630054055}
   - component: {fileID: 1630054054}
+  - component: {fileID: 1630054053}
   - component: {fileID: 1630054056}
   m_Layer: 0
   m_Name: StrategoBoard
@@ -254,6 +255,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!61 &1630054053
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630054052}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.02, y: 10}
+    newSize: {x: 10.02, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 10, y: 10}
+  m_EdgeRadius: 0
 --- !u!212 &1630054054
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -319,18 +346,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &1630054056
-Grid:
+--- !u!114 &1630054056
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630054052}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b818e4769416a7f47ab8029b4dd2b06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileHighlightPrefab: {fileID: 3682895964121599070, guid: ccc801ad8bd2c324bb61953078dda2eb, type: 3}
 --- !u!1001 &2180301656162963068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -385,6 +413,10 @@ PrefabInstance:
     - target: {fileID: 1992314399412020018, guid: da742dd4de2a4ae42b3dd83b7f54194a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188463322514106407, guid: da742dd4de2a4ae42b3dd83b7f54194a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da742dd4de2a4ae42b3dd83b7f54194a, type: 3}
