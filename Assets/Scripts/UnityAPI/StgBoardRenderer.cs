@@ -17,8 +17,8 @@ public class StgBoardRenderer : MonoBehaviour
 
     private void initTileHighlight()
     {
-        Vector2Int gridPoint = Geometry.GridPoint(0, 0);
-        Vector3 point = Geometry.PointFromGrid(gridPoint);
+        Vector2Int gridPoint = GridGeometry.GridPoint(0, 0);
+        Vector3 point = GridGeometry.PointFromGrid(gridPoint);
         tileHighlight = Instantiate(tileHighlightPrefab, point, Quaternion.identity, gameObject.transform);
         tileHighlight.active = true;
     }
@@ -32,15 +32,12 @@ public class StgBoardRenderer : MonoBehaviour
     private void updateTileHighlight()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         RaycastHit hit;
+
         if (Physics.Raycast(ray, out hit))
         {
-            Vector3 point = hit.point;
-            Vector2Int gridPoint = Geometry.GridFromPoint(point);
-
             tileHighlight.active = true;
-            tileHighlight.transform.position =  Geometry.PointFromGrid(gridPoint);
+            tileHighlight.transform.position =  GridGeometry.GridPointFromPoint(hit.point);
         }
         else
         {
