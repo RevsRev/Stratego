@@ -4,44 +4,32 @@ using UnityEngine;
 
 public class StgBoardRenderer : MonoBehaviour
 {
-    private StgBoard board;
-    public GameObject tileHighlightPrefab;
-    public GameObject tileHighlight { get; private set; }
-
+    private StgTileSelector stgTileSelector = new StgTileSelector();
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Initing board renderer");
-        initTileHighlight();
-    }
-
-    private void initTileHighlight()
-    {
-        Vector2Int gridPoint = GridGeometry.GridPoint(0, 0);
-        Vector3 point = GridGeometry.PointFromGrid(gridPoint);
-        tileHighlight = Instantiate(tileHighlightPrefab, point, Quaternion.identity, gameObject.transform);
-        tileHighlight.active = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateTileHighlight();
+        stgTileSelector.updateLeftMouse(Input.GetMouseButtonDown(0));
     }
 
-    private void updateTileHighlight()
+    private void FixedUpdate()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        StgBoardTile tileHit = null;
         if (Physics.Raycast(ray, out hit))
         {
-            tileHighlight.active = true;
-            tileHighlight.transform.position =  GridGeometry.GridPointFromPoint(hit.point);
+            tileHit = StgGameHandler.theGame().board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
+
         }
-        else
-        {
-            tileHighlight.active = false;
-        }
+        stgTileSelector.updateSelection(tileHit);
     }
+
+   
 }

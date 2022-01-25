@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class StgGeneral : StgAbstractPiece
 {
+    /*
+     * Constructor
+     */
+    public StgGeneral(int team) : base(team) { }
+
+    /*
+     * Methods
+     */
     public override void doAttack(StgAbstractPiece stgAbstractPieceToAttack)
     {
         System.Type pieceType = stgAbstractPieceToAttack.GetType();
@@ -14,7 +22,7 @@ public class StgGeneral : StgAbstractPiece
         }
     }
 
-    public override bool canDoMove(Vector2 currentPos, Vector2 destinationPos)
+    public override List<StgBoardTile> getAllowedMoves(StgBoardTile currentPos)
     {
         //TODO - implement
         throw new System.NotImplementedException();

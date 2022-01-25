@@ -9,7 +9,29 @@ using UnityEngine;
  */
 public abstract class StgAbstractPiece
 {
-    public abstract bool canDoMove(Vector2 currentPos, Vector2 destinationPos);
+    /*
+     * Statics
+     */
+    public static int TEAM_BLUE = 0;
+    public static int TEAM_RED = 1;
+
+    /*
+     * Variables
+     */
+    public int team { get; set; } = TEAM_BLUE;
+
+    /*
+     * Constructor
+     */
+    public StgAbstractPiece(int team)
+    {
+        this.team = team;
+    }
+
+    /*
+     * Methods
+     */
+    public abstract List<StgBoardTile> getAllowedMoves(StgBoardTile currentPos);
     public abstract void doAttack(StgAbstractPiece stgAbstractPieceToAttack);
     public void doCaptured()
     {
