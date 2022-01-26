@@ -19,6 +19,7 @@ public abstract class StgAbstractPiece
      * Variables
      */
     public int team { get; set; } = TEAM_BLUE;
+    public Vector2Int position { get; set; }
 
     /*
      * Constructor

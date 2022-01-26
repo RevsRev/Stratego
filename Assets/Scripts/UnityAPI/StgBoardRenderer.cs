@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class StgBoardRenderer : MonoBehaviour
 {
-    private StgTileSelector stgTileSelector = new StgTileSelector();
+    private StgTileSelector stgTileSelector;
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Initing board renderer");
+        initPieceRenderers();
+
+        stgTileSelector = new StgTileSelector();
     }
 
     // Update is called once per frame
@@ -26,10 +29,18 @@ public class StgBoardRenderer : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             tileHit = StgGameHandler.theGame().board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
-
         }
         stgTileSelector.updateSelection(tileHit);
     }
 
+    private void initPieceRenderers()
+    {
+        List<StgBoardTile> occupiedTiles = StgGameHandler.theGame().board.getOccupiedTiles();
+        for (int i = 0; i < occupiedTiles.Count; i++)
+        {
+            StgAbstractPiece piece = occupiedTiles[i].piece;
+            StgPieceRenderer.construct(piece);
+        }
+    }
    
 }

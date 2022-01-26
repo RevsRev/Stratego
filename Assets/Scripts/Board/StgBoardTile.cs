@@ -16,11 +16,52 @@ public class StgBoardTile
 
     public Vector2Int gridLocation { get; set; }
 
+    private List<StgBoardTile> neighbours = null;
+
     /*
      * Methods
      */
     public StgBoardTile(Vector2Int gridLocation)
     {
         this.gridLocation = gridLocation;
+    }
+
+    public List<StgBoardTile> getNeighbours()
+    {
+        if (neighbours != null)
+        {
+            return neighbours;
+        }
+
+        neighbours = new List<StgBoardTile>();
+        
+        if (leftNeighbour != null)
+        {
+            neighbours.Add(leftNeighbour);
+        }
+        if (rightNeighbour != null)
+        {
+            neighbours.Add(rightNeighbour);
+        }
+        if (topNeighbour != null)
+        {
+            neighbours.Add(topNeighbour);
+        }
+        if (bottomNeighbour != null)
+        {
+            neighbours.Add(bottomNeighbour);
+        }
+
+        return neighbours;
+    }
+
+    public List<StgBoardTile> getAvailableMovesForPiece()
+    {
+        if (piece != null)
+        {
+            return piece.getAllowedMoves(this);
+        }
+
+        return new List<StgBoardTile>();
     }
 }

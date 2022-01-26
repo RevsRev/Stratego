@@ -24,7 +24,8 @@ public class StgGeneral : StgAbstractPiece
 
     public override List<StgBoardTile> getAllowedMoves(StgBoardTile currentPos)
     {
-        //TODO - implement
-        throw new System.NotImplementedException();
+        //List<StgBoardTile> allowedMoves = new List<StgBoardTile> ();
+        //TODO - implement this properly!
+        return currentPos.getNeighbours();
     }
 }

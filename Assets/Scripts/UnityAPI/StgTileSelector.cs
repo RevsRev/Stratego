@@ -40,6 +40,8 @@ public class StgTileSelector
         Vector2Int gridPoint = GridGeometry.GridPoint(0, 0);
         Vector3 point = GridGeometry.PointFromGrid(gridPoint);
 
+        tileHighlightPrefab = StgResourceLoader.createFromPrefab(StgResourceLoader.PREFAB_TILE_HIGHLIGHT);
+
         tileHighlightHover = MonoBehaviour.Instantiate(tileHighlightPrefab, point, Quaternion.identity);
         tileHighlightHover.SetActive(false);
 
@@ -49,11 +51,15 @@ public class StgTileSelector
 
     public void updateLeftMouse(bool pressed)
     {
-        leftClick = !leftMousePressed && pressed;
-        leftMousePressed = pressed;
-    }
-    public void updateSelection(StgBoardTile boardTileHover)
-    {
+        if (!leftClick && pressed)
+        {
+            leftClick = true;
+        }
+        else if (leftClick && !pressed)
+        {
+            leftClick = false;
+        }
+
         if (leftClick)
         {
             //Clicking the same tile again will deselect it, as will clicking in empty space.
@@ -68,19 +74,16 @@ public class StgTileSelector
             }
         }
 
+        leftMousePressed = pressed;
+    }
+    public void updateSelection(StgBoardTile boardTileHoverUpdate)
+    {
+        boardTileHover = boardTileHoverUpdate;
         updateHighlights();
     }
     private void updateHighlights()
     {
-        if (boardTileHover != null)
-        {
-            tileHighlightHover.transform.position = GridGeometry.PointFromGrid(boardTileHover.gridLocation);
-            tileHighlightHover.SetActive(true);
-        }
-        else
-        {
-            tileHighlightHover.SetActive(false);
-        }
+        updateHoverHighlights();
 
         if (boardTileSelected != null)
         {
@@ -91,5 +94,27 @@ public class StgTileSelector
         {
             tileHighlightSelected.SetActive(false);
         }
+    }
+
+    private void updateHoverHighlights()
+    {
+        if (boardTileHover == null)
+        {
+            tileHighlightHover.SetActive(false);
+            return;
+        }
+
+        if (boardTileSelected != null)
+        {
+            List<StgBoardTile> allowedHighlights = boardTileSelected.getAvailableMovesForPiece();
+            if (!allowedHighlights.Contains(boardTileHover))
+            {
+                tileHighlightHover.SetActive(false);
+                return;
+            }
+        }
+
+        tileHighlightHover.transform.position = GridGeometry.PointFromGrid(boardTileHover.gridLocation);
+        tileHighlightHover.SetActive(true);
     }
 }
