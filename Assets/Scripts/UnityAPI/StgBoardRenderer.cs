@@ -39,7 +39,7 @@ public class StgBoardRenderer : MonoBehaviour
         for (int i = 0; i < occupiedTiles.Count; i++)
         {
             StgAbstractPiece piece = occupiedTiles[i].piece;
-            StgPieceRenderer.construct(piece);
+            StgPieceRenderer.factory(piece);
         }
     }
    

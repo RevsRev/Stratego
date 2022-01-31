@@ -1,14 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class StgGeneral : StgAbstractPiece
+public class StgMarshal : StgAbstractPiece
 {
     /*
      * Constructor
      */
-    public StgGeneral(int team) : base(team) { }
+    public StgMarshal(int team) : base(team) { }
 
     /*
      * Methods
@@ -22,6 +22,7 @@ public class StgGeneral : StgAbstractPiece
     public override List<Type> reallyGetTypesAttackBeats()
     {
         List<Type> retval = new List<Type>();
+        retval.Add(typeof(StgGeneral));
         retval.Add(typeof(StgColonel));
         retval.Add(typeof(StgMajor));
         retval.Add(typeof(StgCaptain));

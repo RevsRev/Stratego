@@ -63,18 +63,37 @@ public class StgTileSelector
         if (leftClick)
         {
             //Clicking the same tile again will deselect it, as will clicking in empty space.
-            if (boardTileSelected == boardTileHover
-              || boardTileHover == null)
-            {
-                boardTileSelected = null;
-            }
-            else if (boardTileSelected == null)
-            {
-                boardTileSelected = boardTileHover;
-            }
+            doLeftClick();
         }
 
         leftMousePressed = pressed;
+    }
+    private void doLeftClick()
+    {
+        if (boardTileHover == boardTileSelected
+          || boardTileHover == null)
+        {
+            boardTileSelected = null;
+            return;
+        }
+
+        if (boardTileSelected == null)
+        {
+            boardTileSelected = boardTileHover;
+            return;
+        }
+
+        //Now see if we can move the piece!
+        if (boardTileSelected.piece != null)
+        {
+            List<StgBoardTile> allowedMoves = boardTileSelected.piece.getAllowedMoves();
+            if (allowedMoves.Contains(boardTileHover))
+            {
+                boardTileSelected.piece.doMove(boardTileHover);
+                boardTileSelected = null;
+                return;
+            }
+        }
     }
     public void updateSelection(StgBoardTile boardTileHoverUpdate)
     {

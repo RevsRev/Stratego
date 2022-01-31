@@ -59,9 +59,19 @@ public class StgBoardTile
     {
         if (piece != null)
         {
-            return piece.getAllowedMoves(this);
+            return piece.getAllowedMoves();
         }
 
         return new List<StgBoardTile>();
+    }
+
+    public int getOccupyingTeam()
+    {
+        if (piece == null)
+        {
+            return StgAbstractPiece.TEAM_UNASSIGNED;
+        }
+
+        return piece.team;
     }
 }

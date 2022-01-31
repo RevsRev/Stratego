@@ -26,8 +26,55 @@ public class StgBoard
         initBoardTiles();
 
         //Testing - I'm going to put a general on the 1,1 tile
-        dTiles[1][1].piece = new StgGeneral(StgAbstractPiece.TEAM_BLUE);
-        dTiles[1][1].piece.position = new Vector2Int(1, 1);
+        dTiles[0][0].piece = new StgMarshal(StgAbstractPiece.TEAM_RED);
+        dTiles[0][0].piece.tile = dTiles[0][0];
+        dTiles[1][0].piece = new StgGeneral(StgAbstractPiece.TEAM_RED);
+        dTiles[1][0].piece.tile = dTiles[1][0];
+        dTiles[2][0].piece = new StgColonel(StgAbstractPiece.TEAM_RED);
+        dTiles[2][0].piece.tile = dTiles[2][0];
+        dTiles[3][0].piece = new StgMajor(StgAbstractPiece.TEAM_RED);
+        dTiles[3][0].piece.tile = dTiles[3][0];
+        dTiles[4][0].piece = new StgCaptain(StgAbstractPiece.TEAM_RED);
+        dTiles[4][0].piece.tile = dTiles[4][0]; 
+        dTiles[5][0].piece = new StgLieutenant(StgAbstractPiece.TEAM_RED);
+        dTiles[5][0].piece.tile = dTiles[5][0];
+        dTiles[6][0].piece = new StgSergeant(StgAbstractPiece.TEAM_RED);
+        dTiles[6][0].piece.tile = dTiles[6][0];
+        dTiles[7][0].piece = new StgMiner(StgAbstractPiece.TEAM_RED);
+        dTiles[7][0].piece.tile = dTiles[7][0];
+        dTiles[8][0].piece = new StgScout(StgAbstractPiece.TEAM_RED);
+        dTiles[8][0].piece.tile = dTiles[8][0];
+        dTiles[9][0].piece = new StgSpy(StgAbstractPiece.TEAM_RED);
+        dTiles[9][0].piece.tile = dTiles[9][0];
+        dTiles[0][1].piece = new StgMine(StgAbstractPiece.TEAM_RED);
+        dTiles[0][1].piece.tile = dTiles[0][1];
+        dTiles[1][1].piece = new StgFlag(StgAbstractPiece.TEAM_RED);
+        dTiles[1][1].piece.tile = dTiles[1][1];
+
+        dTiles[0][9].piece = new StgMarshal(StgAbstractPiece.TEAM_BLUE);
+        dTiles[0][9].piece.tile = dTiles[0][9];
+        dTiles[1][9].piece = new StgGeneral(StgAbstractPiece.TEAM_BLUE);
+        dTiles[1][9].piece.tile = dTiles[1][9];
+        dTiles[2][9].piece = new StgColonel(StgAbstractPiece.TEAM_BLUE);
+        dTiles[2][9].piece.tile = dTiles[2][9];
+        dTiles[3][9].piece = new StgMajor(StgAbstractPiece.TEAM_BLUE);
+        dTiles[3][9].piece.tile = dTiles[3][9];
+        dTiles[4][9].piece = new StgCaptain(StgAbstractPiece.TEAM_BLUE);
+        dTiles[4][9].piece.tile = dTiles[4][9];
+        dTiles[5][9].piece = new StgLieutenant(StgAbstractPiece.TEAM_BLUE);
+        dTiles[5][9].piece.tile = dTiles[5][9];
+        dTiles[6][9].piece = new StgSergeant(StgAbstractPiece.TEAM_BLUE);
+        dTiles[6][9].piece.tile = dTiles[6][9];
+        dTiles[7][9].piece = new StgMiner(StgAbstractPiece.TEAM_BLUE);
+        dTiles[7][9].piece.tile = dTiles[7][9];
+        dTiles[8][9].piece = new StgScout(StgAbstractPiece.TEAM_BLUE);
+        dTiles[8][9].piece.tile = dTiles[8][9];
+        dTiles[9][9].piece = new StgSpy(StgAbstractPiece.TEAM_BLUE);
+        dTiles[9][9].piece.tile = dTiles[9][9];
+        dTiles[0][8].piece = new StgMine(StgAbstractPiece.TEAM_BLUE);
+        dTiles[0][8].piece.tile = dTiles[0][8];
+        dTiles[1][8].piece = new StgFlag(StgAbstractPiece.TEAM_BLUE);
+        dTiles[1][8].piece.tile = dTiles[1][8];
     }
 
     /*
