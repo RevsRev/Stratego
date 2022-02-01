@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class StgPieceRenderer : MonoBehaviour
+public class StgPieceController : MonoBehaviour
 {
     public StgAbstractPiece piece;
     private Color color;
@@ -120,7 +120,7 @@ public class StgPieceRenderer : MonoBehaviour
         }
 
         GameObject constructedObj = MonoBehaviour.Instantiate(obj);
-        StgPieceRenderer stgPieceRenderer = constructedObj.GetComponent<StgPieceRenderer>();
+        StgPieceController stgPieceRenderer = constructedObj.GetComponent<StgPieceController>();
         stgPieceRenderer.piece = piece;
         stgPieceRenderer.initColor();
     }

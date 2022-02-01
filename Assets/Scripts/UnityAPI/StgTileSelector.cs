@@ -8,6 +8,8 @@ using UnityEngine;
 public class StgTileSelector
 {
 
+    private StgPlayer player;
+
     /*
      * Variables
      */
@@ -27,8 +29,9 @@ public class StgTileSelector
     /*
      * Constructor
      */
-    public StgTileSelector()
+    public StgTileSelector(StgPlayer player)
     {
+        this.player = player;
         initTileHighlights();
     }
 

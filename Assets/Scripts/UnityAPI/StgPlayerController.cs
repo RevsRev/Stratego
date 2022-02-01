@@ -1,17 +1,18 @@
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
-public class StgBoardRenderer : MonoBehaviour
+public class StgPlayerController : MonoBehaviour
 {
+    public StgPlayer player;
     private StgTileSelector stgTileSelector;
 
     // Start is called before the first frame update
     void Start()
     {
-        initPieceRenderers();
-
-        stgTileSelector = new StgTileSelector();
+        stgTileSelector = new StgTileSelector(player);
     }
 
     // Update is called once per frame
@@ -28,19 +29,8 @@ public class StgBoardRenderer : MonoBehaviour
         StgBoardTile tileHit = null;
         if (Physics.Raycast(ray, out hit))
         {
-            tileHit = StgGameHandler.theGame().board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
+            tileHit = player.game.board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
         }
         stgTileSelector.updateSelection(tileHit);
     }
-
-    private void initPieceRenderers()
-    {
-        List<StgBoardTile> occupiedTiles = StgGameHandler.theGame().board.getOccupiedTiles();
-        for (int i = 0; i < occupiedTiles.Count; i++)
-        {
-            StgAbstractPiece piece = occupiedTiles[i].piece;
-            StgPieceRenderer.factory(piece);
-        }
-    }
-   
 }

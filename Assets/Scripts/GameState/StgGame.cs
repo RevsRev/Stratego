@@ -4,34 +4,19 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
-public class StgGameHandler
+public class StgGame
 {
     private bool localGame = true;
 
     public StgBoard board { get; private set; }
-    private StgPlayer playerBlue;
-    private StgPlayer playerRed;
+    public StgPlayer playerBlue { get; private set; }
+    public StgPlayer playerRed { get; private set; }
 
-    private static StgGameHandler instance;
-    private static readonly object padlock = new object();
-
-    private StgGameHandler() 
+    public StgGame() 
     {
         board = new StgBoard();
-    }
-    public static StgGameHandler theGame()
-    {
-        if (instance == null)
-        {
-            lock (padlock)
-            {
-                if (instance == null)
-                {
-                    instance = new StgGameHandler();
-                }
-            }
-        }
-        return instance;
+        playerBlue = new StgPlayer(this, false);
+        playerRed = new StgPlayer(this, true);
     }
 
     internal bool doMove(XmlDocument move)

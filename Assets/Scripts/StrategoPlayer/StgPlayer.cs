@@ -7,12 +7,12 @@ public class StgPlayer
 {
 
     public bool myTurn { get; private set; } = false;
-    private StgGameHandler gameHandler;
+    public StgGame game { get; set; }
 
-    public StgPlayer(StgGameHandler gameHandler, bool myTurn)
+    public StgPlayer(StgGame game, bool myTurn)
     {
         this.myTurn = myTurn;
-        this.gameHandler = gameHandler;
+        this.game = game;
     }
 
     public void nextTurn()
@@ -36,6 +36,6 @@ public class StgPlayer
     }
     public bool doMove(XmlDocument move)
     {
-        return gameHandler.doMove(move);
+        return game.doMove(move);
     }
 }
