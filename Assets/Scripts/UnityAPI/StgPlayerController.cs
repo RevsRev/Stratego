@@ -23,6 +23,11 @@ public class StgPlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!myTurn())
+        {
+            return;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -32,5 +37,10 @@ public class StgPlayerController : MonoBehaviour
             tileHit = player.game.board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
         }
         stgTileSelector.updateSelection(tileHit);
+    }
+
+    private bool myTurn()
+    {
+        return player.myTurn;
     }
 }

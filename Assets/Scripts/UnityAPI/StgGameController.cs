@@ -26,13 +26,11 @@ public class StgGameController : MonoBehaviour
         //Construct all the controllers that we need
         //GameObject boardPrefab = StgResourceLoader.createFromPrefab(StgResourceLoader.PREFAB_BOARD);
 
-        //GameObject gObjPlayerBlue = StgResourceLoader.createFromPrefab(StgResourceLoader.PREFAB_PLAYER);
-        //gObjPlayerBlue.GetComponent<StgPlayerController>().player = game.playerBlue;
-
         GameObject gObjPlayer = StgResourceLoader.createFromPrefab(StgResourceLoader.PREFAB_PLAYER);
         GameObject gObjPlayerRed = MonoBehaviour.Instantiate(gObjPlayer);
-        StgPlayerController stgPlayerController = gObjPlayerRed.GetComponent<StgPlayerController>();
-        stgPlayerController.player = game.playerRed;
+        GameObject gObjPlayerBlue = MonoBehaviour.Instantiate(gObjPlayer);
+        gObjPlayerRed.GetComponent<StgPlayerController>().player = game.playerRed;
+        gObjPlayerBlue.GetComponent<StgPlayerController>().player = game.playerBlue;
 
         initPieceControllers();
 

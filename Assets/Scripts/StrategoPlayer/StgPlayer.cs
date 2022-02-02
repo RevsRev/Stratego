@@ -6,30 +6,34 @@ using System.Xml;
 public class StgPlayer
 {
 
-    public bool myTurn { get; private set; } = false;
+    public bool myTurn { get; set; } = false;
     public StgGame game { get; set; }
 
-    public StgPlayer(StgGame game, bool myTurn)
+    public int team { get; set; }
+
+    public StgPlayer(StgGame game, int team)
     {
-        this.myTurn = myTurn;
+        this.team = team;
         this.game = game;
+
+        myTurn = team == StgAbstractPiece.TEAM_RED;
     }
 
     public void nextTurn()
     {
-        myTurn = !myTurn;
+        game.nextTurn();
     }
 
     //called once per frame provided it is this player's turn
-    private void UpdateTurn()
-    {
-        XmlDocument move = getMove();
-        if (move != null
-            && doMove(move))
-        {
-            nextTurn();
-        }
-    }
+    //private void UpdateTurn()
+    //{
+    //    XmlDocument move = getMove();
+    //    if (move != null
+    //        && doMove(move))
+    //    {
+    //        nextTurn();
+    //    }
+    //}
     public XmlDocument getMove()
     {
         throw new System.NotImplementedException();

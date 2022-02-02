@@ -15,8 +15,14 @@ public class StgGame
     public StgGame() 
     {
         board = new StgBoard();
-        playerBlue = new StgPlayer(this, false);
-        playerRed = new StgPlayer(this, true);
+        playerBlue = new StgPlayer(this, StgAbstractPiece.TEAM_BLUE);
+        playerRed = new StgPlayer(this, StgAbstractPiece.TEAM_RED);
+    }
+
+    public void nextTurn()
+    {
+        playerBlue.myTurn = !playerBlue.myTurn;
+        playerRed.myTurn = !playerRed.myTurn;
     }
 
     internal bool doMove(XmlDocument move)

@@ -73,40 +73,56 @@ public class StgTileSelector
     }
     private void doLeftClick()
     {
+        doSelect();
+        doMove();
+        updateSelectedHighlights();
+    }
+
+    private void doSelect()
+    {
         if (boardTileHover == boardTileSelected
           || boardTileHover == null)
         {
             boardTileSelected = null;
-            return;
         }
-
-        if (boardTileSelected == null)
+        else if (boardTileSelected == null
+          && boardTileHover.getOccupyingTeam() == player.team)
         {
             boardTileSelected = boardTileHover;
-            return;
         }
+    }
 
-        //Now see if we can move the piece!
-        if (boardTileSelected.piece != null)
+    private void doMove()
+    {
+        if (boardTileSelected != null
+          && boardTileSelected.piece != null)
         {
             List<StgBoardTile> allowedMoves = boardTileSelected.piece.getAllowedMoves();
             if (allowedMoves.Contains(boardTileHover))
             {
                 boardTileSelected.piece.doMove(boardTileHover);
-                boardTileSelected = null;
-                return;
+                endTurn();
             }
         }
+    }
+
+    private void endTurn()
+    {
+        tileHighlightHover.SetActive(false);
+        tileHighlightSelected.SetActive(false);
+        boardTileHover = null;
+        boardTileSelected = null;
+        player.nextTurn();
     }
     public void updateSelection(StgBoardTile boardTileHoverUpdate)
     {
         boardTileHover = boardTileHoverUpdate;
-        updateHighlights();
-    }
-    private void updateHighlights()
-    {
         updateHoverHighlights();
+    }
 
+    //TODO - offload the selected tile to the click performed...
+    private void updateSelectedHighlights()
+    {
         if (boardTileSelected != null)
         {
             tileHighlightSelected.transform.position = GridGeometry.PointFromGrid(boardTileSelected.gridLocation);
@@ -121,6 +137,13 @@ public class StgTileSelector
     private void updateHoverHighlights()
     {
         if (boardTileHover == null)
+        {
+            tileHighlightHover.SetActive(false);
+            return;
+        }
+
+        if (boardTileHover.getOccupyingTeam() != player.team
+          && boardTileSelected == null)
         {
             tileHighlightHover.SetActive(false);
             return;
