@@ -8,13 +8,13 @@ public class StgLieutenant : StgAbstractPiece
     /*
      * Constructor
      */
-    public StgLieutenant(int team) : base(team) { }
+    public StgLieutenant(StgGame game, int team) : base(game, team) { }
 
     /*
      * Methods
      */
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         return StgAbstractPiece.getStandardMoves(tile, team);
     }

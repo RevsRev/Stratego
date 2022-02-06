@@ -6,7 +6,14 @@ using UnityEngine;
 
 public class StgGame
 {
+    /*
+     * Statics
+     */
+    public static readonly int STATE_PREGAME = 0;
+    public static readonly int STATE_PLAYING = 1;
+
     private bool localGame = true;
+    private int state = STATE_PREGAME;
 
     public StgBoard board { get; private set; }
     public StgPlayer playerBlue { get; private set; }
@@ -14,9 +21,17 @@ public class StgGame
 
     public StgGame() 
     {
-        board = new StgBoard();
+        board = new StgBoard(this);
         playerBlue = new StgPlayer(this, StgAbstractPiece.TEAM_BLUE);
         playerRed = new StgPlayer(this, StgAbstractPiece.TEAM_RED);
+    }
+
+    public void makeReady()
+    {
+        if (playerBlue.ready && playerRed.ready)
+        {
+            state = STATE_PLAYING;
+        }
     }
 
     public void nextTurn()
@@ -45,5 +60,22 @@ public class StgGame
     private bool doMoveLocalGame(XmlDocument move)
     {
         throw new NotImplementedException();
+    }
+
+    public StgPlayer getPlayerForTeam(int team)
+    {
+        if (team == StgAbstractPiece.TEAM_BLUE)
+        {
+            return playerBlue;
+        }
+        else
+        {
+            return playerRed;
+        }
+    }
+
+    public List<StgBoardTile> getPreGameAllowedMovesForTeam(int team)
+    {
+        return board.getPreGameAllowedMovesForTeam(team);
     }
 }

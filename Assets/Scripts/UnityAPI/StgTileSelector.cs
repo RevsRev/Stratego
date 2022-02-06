@@ -95,7 +95,8 @@ public class StgTileSelector
     private void doMove()
     {
         if (boardTileSelected != null
-          && boardTileSelected.piece != null)
+          && boardTileSelected.piece != null
+          && boardTileSelected != boardTileHover)
         {
             List<StgBoardTile> allowedMoves = boardTileSelected.piece.getAllowedMoves();
             if (allowedMoves.Contains(boardTileHover))

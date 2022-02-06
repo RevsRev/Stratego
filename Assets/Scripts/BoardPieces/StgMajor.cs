@@ -8,13 +8,13 @@ public class StgMajor : StgAbstractPiece
     /*
      * Constructor
      */
-    public StgMajor(int team) : base(team) { }
+    public StgMajor(StgGame game, int team) : base(game, team) { }
 
     /*
      * Methods
      */
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         return StgAbstractPiece.getStandardMoves(tile, team);
     }

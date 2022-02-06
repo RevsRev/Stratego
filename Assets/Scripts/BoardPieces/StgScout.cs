@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class StgScout : StgAbstractPiece
 {
-    public StgScout(int team) : base(team)
+    public StgScout(StgGame game, int team) : base(game, team)
     {
     }
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         List <StgBoardTile> allowedMoves = new List<StgBoardTile> ();
 

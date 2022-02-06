@@ -8,13 +8,13 @@ public class StgColonel : StgAbstractPiece
     /*
      * Constructor
      */
-    public StgColonel(int team) : base(team) { }
+    public StgColonel(StgGame game, int team) : base(game, team) { }
 
     /*
      * Methods
      */
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         return StgAbstractPiece.getStandardMoves(tile, team);
     }

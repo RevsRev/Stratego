@@ -5,7 +5,7 @@ using System.Xml;
 
 public class StgPlayer
 {
-
+    public bool ready { get; private set; } = false;
     public bool myTurn { get; set; } = false;
     public StgGame game { get; set; }
 
@@ -22,6 +22,12 @@ public class StgPlayer
     public void nextTurn()
     {
         game.nextTurn();
+    }
+
+    public void makeReady()
+    {
+        ready = true;
+        game.makeReady();
     }
 
     //called once per frame provided it is this player's turn

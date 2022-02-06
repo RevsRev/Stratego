@@ -23,21 +23,40 @@ public abstract class StgAbstractPiece
     public int team { get; set; } = TEAM_BLUE;
     public StgBoardTile tile { get; set; }
     public bool alive { get; private set; } = true; //alive or not alive
+    private StgGame game;
 
     private List<Type> typesAttackBeats = null;
 
     /*
      * Constructor
      */
-    public StgAbstractPiece(int team)
+    public StgAbstractPiece(StgGame game, int team)
     {
+        this.game = game;
         this.team = team;
     }
 
     /*
      * Methods
      */
-    public abstract List<StgBoardTile> getAllowedMoves();
+    public StgPlayer getPlayer()
+    {
+        return game.getPlayerForTeam(team);
+    }
+    public List<StgBoardTile> getAllowedMoves()
+    {
+        StgPlayer player = getPlayer();
+        if (player.ready)
+        {
+            return getInGameAllowedMoves();
+        }
+        return getPreGameAllowedMoves();
+    }
+    public abstract List<StgBoardTile> getInGameAllowedMoves();
+    public List<StgBoardTile> getPreGameAllowedMoves()
+    {
+        return game.getPreGameAllowedMovesForTeam(team);
+    }
 
     //Standard moves (all pieces move like this except for scouts and immobile pieces)
     public static List<StgBoardTile> getStandardMoves(StgBoardTile tile, int team)

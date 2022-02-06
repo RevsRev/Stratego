@@ -8,13 +8,13 @@ public class StgMiner : StgAbstractPiece
     /*
      * Constructor
      */
-    public StgMiner(int team) : base(team) { }
+    public StgMiner(StgGame game, int team) : base(game, team) { }
 
     /*
      * Methods
      */
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         return StgAbstractPiece.getStandardMoves(tile, team);
     }

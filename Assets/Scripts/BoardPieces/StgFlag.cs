@@ -5,11 +5,11 @@ using System;
 
 public class StgFlag : StgAbstractPiece
 {
-    public StgFlag(int team) : base(team)
+    public StgFlag(StgGame game, int team) : base(game, team)
     {
     }
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         //Immobile
         return new List<StgBoardTile>();

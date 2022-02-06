@@ -71,7 +71,10 @@ public class StgBoardTile
         {
             return StgAbstractPiece.TEAM_UNASSIGNED;
         }
-
         return piece.team;
+    }
+    public bool occupied()
+    {
+        return getOccupyingTeam() != StgAbstractPiece.TEAM_UNASSIGNED;
     }
 }

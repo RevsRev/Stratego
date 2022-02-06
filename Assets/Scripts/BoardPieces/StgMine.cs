@@ -5,11 +5,11 @@ using System;
 
 public class StgMine : StgAbstractPiece
 {
-    public StgMine(int team) : base(team)
+    public StgMine(StgGame game, int team) : base(game, team)
     {
     }
 
-    public override List<StgBoardTile> getAllowedMoves()
+    public override List<StgBoardTile> getInGameAllowedMoves()
     {
         //Immobile
         return new List<StgBoardTile>();
