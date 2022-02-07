@@ -26,8 +26,20 @@ public class StgPlayer
 
     public void makeReady()
     {
-        ready = true;
-        game.makeReady();
+        if (game.teamCanBeMadeReady(team))
+        {
+            if (!ready)
+            {
+                Debug.Log("Team " + team + " made ready!");
+
+                ready = true;
+                game.makeReady();
+            }
+        }
+        else
+        {
+            Debug.Log("Team " + team + " cannot be made ready!");
+        }
     }
 
     //called once per frame provided it is this player's turn

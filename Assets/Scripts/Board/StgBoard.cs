@@ -7,11 +7,13 @@ using UnityEngine;
  */
 public class StgBoard
 {
+    private const int BOARD_DEADZONE_HEIGHT = 4;
+
     /*
-     * Statics
-     */
-    private static int BOARD_HEIGHT = 10;
+* Statics
+*/
     private static int BOARD_WIDTH = 10;
+    private static int BOARD_HEIGHT = 10;
 
     /*
      * Variables
@@ -28,56 +30,7 @@ public class StgBoard
 
         initBoardTiles();
 
-        //Testing - I'm going to put a general on the 1,1 tile
-        dTiles[0][0].piece = new StgMarshal(game, StgAbstractPiece.TEAM_RED);
-        dTiles[0][0].piece.tile = dTiles[0][0];
-        dTiles[1][0].piece = new StgGeneral(game, StgAbstractPiece.TEAM_RED);
-        dTiles[1][0].piece.tile = dTiles[1][0];
-        dTiles[2][0].piece = new StgColonel(game, StgAbstractPiece.TEAM_RED);
-        dTiles[2][0].piece.tile = dTiles[2][0];
-        dTiles[3][0].piece = new StgMajor(game, StgAbstractPiece.TEAM_RED);
-        dTiles[3][0].piece.tile = dTiles[3][0];
-        dTiles[4][0].piece = new StgCaptain(game, StgAbstractPiece.TEAM_RED);
-        dTiles[4][0].piece.tile = dTiles[4][0]; 
-        dTiles[5][0].piece = new StgLieutenant(game, StgAbstractPiece.TEAM_RED);
-        dTiles[5][0].piece.tile = dTiles[5][0];
-        dTiles[6][0].piece = new StgSergeant(game, StgAbstractPiece.TEAM_RED);
-        dTiles[6][0].piece.tile = dTiles[6][0];
-        dTiles[7][0].piece = new StgMiner(game, StgAbstractPiece.TEAM_RED);
-        dTiles[7][0].piece.tile = dTiles[7][0];
-        dTiles[8][0].piece = new StgScout(game, StgAbstractPiece.TEAM_RED);
-        dTiles[8][0].piece.tile = dTiles[8][0];
-        dTiles[9][0].piece = new StgSpy(game, StgAbstractPiece.TEAM_RED);
-        dTiles[9][0].piece.tile = dTiles[9][0];
-        dTiles[0][1].piece = new StgMine(game, StgAbstractPiece.TEAM_RED);
-        dTiles[0][1].piece.tile = dTiles[0][1];
-        dTiles[1][1].piece = new StgFlag(game, StgAbstractPiece.TEAM_RED);
-        dTiles[1][1].piece.tile = dTiles[1][1];
-
-        dTiles[0][9].piece = new StgMarshal(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[0][9].piece.tile = dTiles[0][9];
-        dTiles[1][9].piece = new StgGeneral(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[1][9].piece.tile = dTiles[1][9];
-        dTiles[2][9].piece = new StgColonel(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[2][9].piece.tile = dTiles[2][9];
-        dTiles[3][9].piece = new StgMajor(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[3][9].piece.tile = dTiles[3][9];
-        dTiles[4][9].piece = new StgCaptain(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[4][9].piece.tile = dTiles[4][9];
-        dTiles[5][9].piece = new StgLieutenant(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[5][9].piece.tile = dTiles[5][9];
-        dTiles[6][9].piece = new StgSergeant(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[6][9].piece.tile = dTiles[6][9];
-        dTiles[7][9].piece = new StgMiner(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[7][9].piece.tile = dTiles[7][9];
-        dTiles[8][9].piece = new StgScout(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[8][9].piece.tile = dTiles[8][9];
-        dTiles[9][9].piece = new StgSpy(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[9][9].piece.tile = dTiles[9][9];
-        dTiles[0][8].piece = new StgMine(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[0][8].piece.tile = dTiles[0][8];
-        dTiles[1][8].piece = new StgFlag(game, StgAbstractPiece.TEAM_BLUE);
-        dTiles[1][8].piece.tile = dTiles[1][8];
+        initPieces();
     }
 
     /*
@@ -85,32 +38,145 @@ public class StgBoard
      */
     private void initBoardTiles()
     {
-        //First create all the tiles
-        for (int i=0; i<BOARD_HEIGHT; i++)
+        //First create all the tiles - including the tiles "off board" that are used for putting the pieces when setting up the game.
+        for (int i = 0; i < BOARD_WIDTH; i++)
         {
             dTiles[i] = new Dictionary<int, StgBoardTile>();
-            for (int j=0; j<BOARD_WIDTH; j++)
+            for (int j = -BOARD_DEADZONE_HEIGHT; j < BOARD_HEIGHT + BOARD_DEADZONE_HEIGHT; j++)
             {
                 dTiles[i][j] = new StgBoardTile(new Vector2Int(i, j));
             }
         }
 
         //Now cache all the neighbours
-        for (int i=0; i<BOARD_HEIGHT; i++)
+        for (int i = 0; i < BOARD_WIDTH; i++)
         {
-            for (int j=0; j<BOARD_WIDTH; j++)
+            for (int j = 0; j < BOARD_HEIGHT; j++)
             {
                 StgBoardTile boardTile = dTiles[i][j];
 
                 if (i != 0)
-                    boardTile.bottomNeighbour = dTiles[i - 1][j];
-                if (i != BOARD_HEIGHT - 1)
-                    boardTile.topNeighbour = dTiles[i + 1][j];
+                    boardTile.leftNeighbour = dTiles[i - 1][j];
+                if (i != BOARD_WIDTH - 1)
+                    boardTile.rightNeighbour = dTiles[i + 1][j];
                 if (j != 0)
-                    boardTile.leftNeighbour = dTiles[i][j - 1];
-                if (j != BOARD_WIDTH - 1)
-                    boardTile.rightNeighbour = dTiles[i][j + 1];
+                    boardTile.bottomNeighbour = dTiles[i][j - 1];
+                if (j != BOARD_HEIGHT - 1)
+                    boardTile.topNeighbour = dTiles[i][j + 1];
             }
+        }
+
+        //Remove the neighbours for the special water tiles
+        //unlinkWaterTiles(2, 2, 4, 2);
+        //unlinkWaterTiles(6, 2, 4, 2);
+    }
+
+    private void unlinkWaterTiles(int xTileStart, int numXTiles, int yTileStart, int numYTiles)
+    {
+        for (int i = xTileStart - 1; i <= xTileStart + numXTiles + 1; i++)
+        {
+            for (int j = yTileStart - 1; j < yTileStart + numYTiles + 1; j++)
+            {
+                if (i != xTileStart - 1)
+                {
+                    dTiles[i][j].leftNeighbour = null;
+                }
+
+                if (i != xTileStart + numXTiles + 1)
+                {
+                    dTiles[i][j].rightNeighbour = null;
+                }
+
+                if (j != yTileStart - 1)
+                {
+                    dTiles[i][j].bottomNeighbour = null;
+                }
+
+                if (j != yTileStart + numYTiles + 1)
+                {
+                    dTiles[i][j].topNeighbour = null;
+                }
+            }
+        }
+    }
+
+    private void initPieces()
+    {
+        initPieces(StgAbstractPiece.TEAM_RED);
+        initPieces(StgAbstractPiece.TEAM_BLUE);
+    }
+    private void initPieces(int team)
+    {
+        int heightLower = -BOARD_DEADZONE_HEIGHT;
+        int heightUpper = 0;
+
+        if (team == StgAbstractPiece.TEAM_BLUE)
+        {
+            heightUpper = BOARD_HEIGHT + BOARD_DEADZONE_HEIGHT;
+            heightLower = BOARD_HEIGHT;
+        }
+
+        int count = 0;
+        for (int i=0; i<BOARD_WIDTH; i++)
+        {
+            for (int j=heightLower; j<heightUpper; j++)
+            {
+                StgAbstractPiece piece = getInitialPiece(count, team);
+                dTiles[i][j].piece = piece;
+                piece.tile = dTiles[i][j];
+                count++;
+            }
+        }
+    }
+    private StgAbstractPiece getInitialPiece(int count, int team)
+    {
+        if (count < 8)
+        {
+            return new StgScout(game, team);
+        }
+        else if (count < 14)
+        {
+            return new StgMine(game, team);
+        }
+        else if (count < 19)
+        {
+            return new StgMiner(game, team);
+        }
+        else if (count < 23)
+        {
+            return new StgSergeant(game, team);
+        }
+        else if (count < 27)
+        {
+            return new StgLieutenant(game, team);
+        }
+        else if (count < 31)
+        {
+            return new StgCaptain(game, team);
+        }
+        else if (count < 34)
+        {
+            return new StgMajor(game, team);
+        }
+        else if (count < 36)
+        {
+            return new StgColonel(game, team);
+        }
+        else if (count < 37)
+        {
+            return new StgGeneral(game, team);
+        }
+        else if (count < 38)
+        {
+            return new StgMarshal(game, team);
+        }
+        else if (count < 39)
+        {
+            return new StgSpy(game, team);
+        }
+        else
+        {
+            return new StgFlag(game, team);
         }
     }
 
@@ -122,9 +188,9 @@ public class StgBoard
     public List<StgBoardTile> getOccupiedTiles()
     {
         List<StgBoardTile> retval = new List<StgBoardTile>();
-        for (int i=0; i<dTiles.Count; i++)
+        for (int i=0; i<BOARD_WIDTH; i++)
         {
-            for (int j=0; j<dTiles[i].Count; j++)
+            for (int j= -BOARD_DEADZONE_HEIGHT; j<BOARD_HEIGHT + BOARD_DEADZONE_HEIGHT; j++)
             {
                 StgBoardTile tile = dTiles[i][j];
                 if (tile.piece != null)
@@ -145,10 +211,10 @@ public class StgBoard
         if (team == StgAbstractPiece.TEAM_BLUE)
         {
             lower = 6;
-            upper = BOARD_HEIGHT;
+            upper = BOARD_WIDTH;
         }
 
-        for (int i=0; i<BOARD_HEIGHT; i++)
+        for (int i=0; i<BOARD_WIDTH; i++)
         {
             for (int j=lower; j< upper; j++)
             {
@@ -159,5 +225,11 @@ public class StgBoard
             }
         }
         return retval;
+    }
+
+    public bool teamIsReady(int team)
+    {
+        List<StgBoardTile> preGameMoves = getPreGameAllowedMovesForTeam(team);
+        return preGameMoves.Count == 0;
     }
 }

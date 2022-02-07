@@ -18,7 +18,19 @@ public class StgPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stgTileSelector.updateLeftMouse(Input.GetMouseButtonDown(0));
+        bool leftMouseDown = Input.GetMouseButtonDown(0);
+        stgTileSelector.updateLeftMouse(leftMouseDown);
+
+        if (!leftMouseDown
+          && Input.GetKeyDown(KeyCode.R))
+        {
+            makeReady();
+        }
+    }
+
+    private void makeReady()
+    {
+        player.makeReady();
     }
 
     private void FixedUpdate()
@@ -34,13 +46,27 @@ public class StgPlayerController : MonoBehaviour
         StgBoardTile tileHit = null;
         if (Physics.Raycast(ray, out hit))
         {
-            tileHit = player.game.board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
+            if (hit.collider.gameObject.name == "StrategoBoard")
+            {
+                tileHit = player.game.board.getTileForGridPoint(GridGeometry.GridFromPoint(hit.point));
+            }
         }
         stgTileSelector.updateSelection(tileHit);
     }
 
     private bool myTurn()
     {
+        //While preparing the game, both players can move all their pieces freely.
+        if (!player.ready)
+        {
+            return true;
+        }
+        //This player is ready but the other isn't
+        else if (!player.game.ready())
+        {
+            return false;
+        }
+
         return player.myTurn;
     }
 }

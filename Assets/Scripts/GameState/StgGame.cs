@@ -34,6 +34,16 @@ public class StgGame
         }
     }
 
+    public bool ready()
+    {
+        return state != STATE_PREGAME;
+    }
+
+    public bool teamCanBeMadeReady(int team)
+    {
+        return board.teamIsReady(team);
+    }
+
     public void nextTurn()
     {
         playerBlue.myTurn = !playerBlue.myTurn;
