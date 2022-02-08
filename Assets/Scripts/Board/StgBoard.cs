@@ -67,35 +67,44 @@ public class StgBoard
         }
 
         //Remove the neighbours for the special water tiles
-        //unlinkWaterTiles(2, 2, 4, 2);
-        //unlinkWaterTiles(6, 2, 4, 2);
+        unlinkWaterTiles(2, 2, 4, 2);
+        unlinkWaterTiles(6, 2, 4, 2);
     }
 
     private void unlinkWaterTiles(int xTileStart, int numXTiles, int yTileStart, int numYTiles)
     {
-        for (int i = xTileStart - 1; i <= xTileStart + numXTiles + 1; i++)
+        for (int i = xTileStart - 1; i < xTileStart + numXTiles + 1; i++)
         {
             for (int j = yTileStart - 1; j < yTileStart + numYTiles + 1; j++)
             {
-                if (i != xTileStart - 1)
+
+                if (j != yTileStart - 1
+                  && j != yTileStart + numYTiles)
                 {
-                    dTiles[i][j].leftNeighbour = null;
+                    if (i != xTileStart - 1)
+                    {
+                        dTiles[i][j].leftNeighbour = null;
+                    }
+
+                    if (i != xTileStart + numXTiles)
+                    {
+                        dTiles[i][j].rightNeighbour = null;
+                    }
                 }
 
-                if (i != xTileStart + numXTiles + 1)
+                if (i != xTileStart -1
+                  && i != xTileStart + numXTiles)
                 {
-                    dTiles[i][j].rightNeighbour = null;
-                }
+                    if (j != yTileStart - 1)
+                    {
+                        dTiles[i][j].bottomNeighbour = null;
+                    }
 
-                if (j != yTileStart - 1)
-                {
-                    dTiles[i][j].bottomNeighbour = null;
-                }
-
-                if (j != yTileStart + numYTiles + 1)
-                {
-                    dTiles[i][j].topNeighbour = null;
-                }
+                    if (j != yTileStart + numYTiles)
+                    {
+                        dTiles[i][j].topNeighbour = null;
+                    }
+                }                
             }
         }
     }
@@ -187,13 +196,32 @@ public class StgBoard
 
     public List<StgBoardTile> getOccupiedTiles()
     {
+        List<StgBoardTile> blueTeam = getOccupiedTilesForTeam(StgAbstractPiece.TEAM_BLUE, true);
+        List<StgBoardTile> redTeam = getOccupiedTilesForTeam(StgAbstractPiece.TEAM_RED, true);
+
         List<StgBoardTile> retval = new List<StgBoardTile>();
-        for (int i=0; i<BOARD_WIDTH; i++)
+        retval.AddRange(blueTeam);
+        retval.AddRange(redTeam);
+        return retval;
+    }
+    public List<StgBoardTile> getOccupiedTilesForTeam(int team, bool includeDeadZone)
+    {
+        int lower = 0;
+        int upper = BOARD_HEIGHT;
+        if (includeDeadZone)
         {
-            for (int j= -BOARD_DEADZONE_HEIGHT; j<BOARD_HEIGHT + BOARD_DEADZONE_HEIGHT; j++)
+            lower = -BOARD_DEADZONE_HEIGHT;
+            upper = BOARD_HEIGHT + BOARD_DEADZONE_HEIGHT;
+        }
+
+        List<StgBoardTile> retval = new List<StgBoardTile>();
+        for (int i = 0; i < BOARD_WIDTH; i++)
+        {
+            for (int j = lower; j < upper; j++)
             {
                 StgBoardTile tile = dTiles[i][j];
-                if (tile.piece != null)
+                if (tile.piece != null
+                  && tile.piece.team == team)
                 {
                     retval.Add(tile);
                 }
@@ -231,5 +259,40 @@ public class StgBoard
     {
         List<StgBoardTile> preGameMoves = getPreGameAllowedMovesForTeam(team);
         return preGameMoves.Count == 0;
+    }
+
+    //Method to quickly fill in the game start spaces so that I don't have to do it every time when testing.
+    public void randomlyFill(int team)
+    {
+        List<StgBoardTile> occupiedDeadZoneTiles = getOccupiedDeadZoneTilesForTeam(team);
+        List<StgBoardTile> tilesToFill = getPreGameAllowedMovesForTeam(team);
+
+
+        for (int i=0; i<occupiedDeadZoneTiles.Count; i++)
+        {
+            int tileToFillIndex = Random.Range(0, tilesToFill.Count);
+            StgBoardTile tileToFill = tilesToFill[tileToFillIndex];
+            occupiedDeadZoneTiles[i].piece.doMove(tileToFill);
+
+            tilesToFill.RemoveAt(tileToFillIndex);
+        }
+    }
+
+    private List<StgBoardTile> getOccupiedDeadZoneTilesForTeam(int team)
+    {
+        List<StgBoardTile> allOccupiedTiles = getOccupiedTilesForTeam(team, true);
+        List<StgBoardTile> allNonDeadZoneTiles = getOccupiedTilesForTeam(team, false);
+
+        List<StgBoardTile> deadZoneTiles = new List<StgBoardTile>();
+
+        for (int i = 0; i < allOccupiedTiles.Count; i++)
+        {
+            StgBoardTile tile = allOccupiedTiles[i];
+            if (!allNonDeadZoneTiles.Contains(tile))
+            {
+                deadZoneTiles.Add(tile);
+            }
+        }
+        return deadZoneTiles;
     }
 }

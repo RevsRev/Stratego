@@ -21,10 +21,23 @@ public class StgPlayerController : MonoBehaviour
         bool leftMouseDown = Input.GetMouseButtonDown(0);
         stgTileSelector.updateLeftMouse(leftMouseDown);
 
-        if (!leftMouseDown
-          && Input.GetKeyDown(KeyCode.R))
+        if (!leftMouseDown)
+        {
+            doKeyPress();
+        }
+         
+    }
+
+    private void doKeyPress()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
         {
             makeReady();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            player.game.board.randomlyFill(player.team);
         }
     }
 
