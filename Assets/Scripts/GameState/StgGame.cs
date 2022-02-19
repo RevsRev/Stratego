@@ -19,8 +19,10 @@ public class StgGame
     public StgPlayer playerBlue { get; private set; }
     public StgPlayer playerRed { get; private set; }
 
-    public StgGame() 
+    public StgGame(bool localGame) 
     {
+        this.localGame = localGame;
+
         board = new StgBoard(this);
         playerBlue = new StgPlayer(this, StgAbstractPiece.TEAM_BLUE);
         playerRed = new StgPlayer(this, StgAbstractPiece.TEAM_RED);
@@ -50,26 +52,51 @@ public class StgGame
         playerRed.myTurn = !playerRed.myTurn;
     }
 
-    internal bool doMove(XmlDocument move)
+    public bool doMove(StgPlayer player, StgAbstractPiece pieceToMove, StgBoardTile tileToMoveTo)
     {
+        bool success = false;
         if (localGame)
         {
-            return doMoveLocalGame(move);
+            success = doMoveLocalGame(pieceToMove, tileToMoveTo);
         }
         else
         {
-            return doMoveNonLocalGame(move);
+            success = doMoveNonLocalGame(pieceToMove, tileToMoveTo);
         }
+
+        if (success)
+        {
+            player.nextTurn();
+        }
+
+        return success;
     }
 
-    private bool doMoveNonLocalGame(XmlDocument move)
+    private bool doMoveNonLocalGame(StgAbstractPiece pieceToMove, StgBoardTile tileToMoveTo)
+    {
+        //Make sure we are allowed to do the move on the Svr before moving locally.
+        if (doMoveOnSvr(pieceToMove, tileToMoveTo))
+        {
+            return doMoveLocalGame(pieceToMove, tileToMoveTo);
+        }
+        return false;
+    }
+
+    private bool doMoveOnSvr(StgAbstractPiece pieceToMove, StgBoardTile tileToMoveTo)
     {
         throw new NotImplementedException();
     }
 
-    private bool doMoveLocalGame(XmlDocument move)
+    private bool doMoveLocalGame(StgAbstractPiece pieceToMove, StgBoardTile tileToMoveTo)
     {
-        throw new NotImplementedException();
+        StgBoardTile currentTile = pieceToMove.tile;
+        currentTile.piece = null;
+        currentTile = tileToMoveTo;
+
+        //Now do attack
+        pieceToMove.doAttack(tileToMoveTo.piece);
+        //Don't need any verification for local moves, always return true!
+        return true;
     }
 
     public StgPlayer getPlayerForTeam(int team)

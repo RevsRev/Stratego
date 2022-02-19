@@ -101,8 +101,10 @@ public class StgTileSelector
             List<StgBoardTile> allowedMoves = boardTileSelected.piece.getAllowedMoves();
             if (allowedMoves.Contains(boardTileHover))
             {
-                boardTileSelected.piece.doMove(boardTileHover);
-                endTurn();
+                if (boardTileSelected.piece.doMove(player, boardTileHover))
+                {
+                    endTurn();
+                }
             }
         }
     }
@@ -113,7 +115,6 @@ public class StgTileSelector
         tileHighlightSelected.SetActive(false);
         boardTileHover = null;
         boardTileSelected = null;
-        player.nextTurn();
     }
     public void updateSelection(StgBoardTile boardTileHoverUpdate)
     {

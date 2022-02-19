@@ -128,19 +128,13 @@ public abstract class StgAbstractPiece
 
     private static void doOutcome(StgAbstractPiece winner, StgAbstractPiece loser)
     {
-        winner.doMove(loser.tile);
         winner.doWin();
         loser.doCaptured();
     }
 
-    public void doMove(StgBoardTile tileToMoveTo)
+    public bool doMove(StgPlayer player, StgBoardTile tileToMoveTo)
     {
-        //Move the piece and unlink from the tile
-        tile.piece = null;
-        tile = tileToMoveTo;
-
-        //Now do attack
-        doAttack(tileToMoveTo.piece);
+        return game.doMove(player, this, tileToMoveTo);
     }
     public void doCaptured()
     {

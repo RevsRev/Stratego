@@ -41,23 +41,4 @@ public class StgPlayer
             Debug.Log("Team " + team + " cannot be made ready!");
         }
     }
-
-    //called once per frame provided it is this player's turn
-    //private void UpdateTurn()
-    //{
-    //    XmlDocument move = getMove();
-    //    if (move != null
-    //        && doMove(move))
-    //    {
-    //        nextTurn();
-    //    }
-    //}
-    public XmlDocument getMove()
-    {
-        throw new System.NotImplementedException();
-    }
-    public bool doMove(XmlDocument move)
-    {
-        return game.doMove(move);
-    }
 }

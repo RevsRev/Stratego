@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using UnityEngine; //Need to remove this, just for testing
@@ -14,81 +14,101 @@ using UnityEngine; //Need to remove this, just for testing
 
 public class StgSvr
 {
+    private static readonly object padlock = new object();
+    private static StgSvr theServer = new StgSvr();
+
+    private const int NUM_ROOMS = 100;
+    private List<StgRoom> rooms = new List<StgRoom>();
+
+    private const int NUM_CONNECTION_THREADS = 10;
+    private List<Thread> threads = new List<Thread>();
+
+    private IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+    Int32 START_PORT = 1300;
+
     private TcpListener listener;
+
+    /*
+     * Entry point to our program to start up the server.
+     */
     //static void Main(String[] args)
     //{
-    //    //For testing purposes only
-    //    bool server = true;
-
-    //    if (server)
+    //    StgSvr theServer = the();
+    //    while (!theServer.exit())
     //    {
-    //        //create a server
-    //        StgSvr theSvr = new StgSvr();
-    //        theSvr.doMain();
-    //    }
-    //    else
-    //    {
-    //        //try to connect to an existing server
-    //        StgTcpConnectionManager.testConnection("127.0.0.1", "Hello World!");
+    //        Thread.Sleep(1000);
     //    }
     //}
-
-    public StgSvr()
+    public static StgSvr the()
     {
-    }
-
-    public void doMain()
-    {
-        try
+        if (theServer == null)
         {
-            Int32 port = 13000;
-            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-
-            listener = new TcpListener(localAddr, port);
-            listener.Start();
-
-            Byte[] bytes = new Byte[1024];
-            String data = null;
-
-            while (true)
+            lock(padlock)
             {
-                Console.Write("Waiting for a connection...");
-                Debug.Log("Waiting for a connection...");
-
-                TcpClient client = listener.AcceptTcpClient();
-                Console.WriteLine("Connection accepted!");
-                Debug.Log("Connection accepted!");
-
-                data = null;
-
-                NetworkStream stream = client.GetStream();
-                int i = 0;
-
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                if (theServer == null)
                 {
-                    data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine("Received {0}", data);
-                    Debug.Log("Received " + data);
-
-                    data = data.ToUpper();
-
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine("Sent {0}", data);
-                    Debug.Log("Sent " + data);
+                    theServer = new StgSvr();
                 }
-
-                client.Close();
             }
         }
-        catch (SocketException e)
+        return theServer;
+    }
+
+    private StgSvr()
+    {
+        initRooms();
+        initThreads();
+        go();
+    }
+
+    private void initRooms()
+    {
+        for (int i=0; i<NUM_ROOMS; i++)
         {
-            Console.WriteLine("SocketException: {0}", e);
+            rooms.Add(new StgRoom());
         }
-        finally
+    }
+
+    private void initThreads()
+    {
+        for (int i=0; i<NUM_CONNECTION_THREADS;i++)
         {
-            listener.Stop();
+            threads.Add
+            (
+               new Thread(() =>
+               {
+                   Int32 port = START_PORT + i;
+                   StgConnectionRunnable runnable = new StgConnectionRunnable(localAddr, port);
+                   runnable.run();
+               })
+            );
         }
+    }
+
+    private void go()
+    {
+        for (int i=0; i<threads.Count; i++)
+        {
+            threads[i].Start();
+        }
+    }
+
+    public bool exit()
+    {
+        return false;
+    }
+
+    public bool acceptClient(TcpClient client)
+    {
+        for (int i=0; i<rooms.Count; i++)
+        {
+            StgRoom room = rooms[i];
+            if (!room.isFull())
+            {
+                //Could fail if mulitple people try to join at the same time.
+                return room.join(client);
+            }
+        }
+        return false;
     }
 }

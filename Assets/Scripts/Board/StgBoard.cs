@@ -272,7 +272,7 @@ public class StgBoard
         {
             int tileToFillIndex = Random.Range(0, tilesToFill.Count);
             StgBoardTile tileToFill = tilesToFill[tileToFillIndex];
-            occupiedDeadZoneTiles[i].piece.doMove(tileToFill);
+            occupiedDeadZoneTiles[i].piece.doMove(null, tileToFill);
 
             tilesToFill.RemoveAt(tileToFillIndex);
         }
