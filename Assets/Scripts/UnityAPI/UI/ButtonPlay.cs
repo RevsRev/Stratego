@@ -10,7 +10,6 @@ public class ButtonPlay : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool local = true;
-    private bool shouldContinue = true;
 
     public void OnButtonPress()
     {
@@ -32,18 +31,8 @@ public class ButtonPlay : MonoBehaviour
 
     private void playNonLocal()
     {
-        Thread testThread = new Thread(() =>
-        {
-            while (shouldContinue)
-            {   StgTcpConnectionManager.testConnection("127.0.0.1", "Hello World!");
-                Thread.Sleep(10000);
-            }
-        });
-        testThread.Start();
-    }
-
-    private void OnApplicationQuit()
-    {
-        shouldContinue = false;
+        //Create two new connections so that we can start a room!
+        new StgTcpConnectionManager();
+        new StgTcpConnectionManager();
     }
 }
