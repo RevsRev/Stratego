@@ -12,17 +12,19 @@ public abstract class StgAbstractMsg
 
     public const string TAG_NAME_MSG_TYPE = "MsgType";
 
-    protected XmlDocument data;
+    protected StgXml data;
 
-    public StgAbstractMsg(XmlDocument data)
+    public StgAbstractMsg(StgXml data)
     {
         this.data = data;
+        readFromXml();
     }
+    protected abstract void readFromXml();
 
-
+    protected abstract StgXml writeToXml();
     public static StgAbstractMsg factoryForData(String data)
     {
-        XmlDocument doc = new XmlDocument();
+        StgXml doc = new StgXml();
         doc.LoadXml(data);
 
         XmlNodeList xmlNodeList = doc.GetElementsByTagName(TAG_NAME_MSG_TYPE);
