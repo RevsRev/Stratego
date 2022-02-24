@@ -7,17 +7,16 @@ using System.Xml;
 
 public class StgMsgDeletePiece : StgAbstractMsg
 {
-    public StgMsgDeletePiece(StgXml data) : base(data)
+    public StgMsgDeletePiece(XmlElement element) : base(element)
     {
-
     }
 
-    protected override void readFromXml()
+    protected override void readFromXml(XmlElement element)
     {
         throw new NotImplementedException();
     }
 
-    protected override StgXml writeToXml()
+    protected override XmlElement writeToXml(XmlDocument parentDocument)
     {
         throw new NotImplementedException();
     }

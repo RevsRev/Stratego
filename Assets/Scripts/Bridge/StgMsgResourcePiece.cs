@@ -13,31 +13,33 @@ using UnityEngine;
  */
 public class StgMsgResourcePiece : StgAbstractMsg
 {
+    public const string TAG_NAME = "ResourcePiece";
+
     public const string ATTRIBUTE_LOCATION = "Location";
     public const string ATTRIBUTE_TYPE = "Type";
 
     Vector2Int ?location = null;
     String type = null;
 
-    public StgMsgResourcePiece(StgXml data) : base(data)
+    public StgMsgResourcePiece(XmlElement element) : base(element)
     {
         
     }
-    protected override void readFromXml()
+    protected override void readFromXml(XmlElement element)
     {
-        XmlAttribute attrLocation = data.getAttributeForName(ATTRIBUTE_LOCATION);
-        XmlAttribute attrType = data.getAttributeForName(ATTRIBUTE_TYPE);
+        XmlAttribute attrLocation = StgXmlUtils.getAttributeForName(ATTRIBUTE_LOCATION, element);
+        XmlAttribute attrType = StgXmlUtils.getAttributeForName(ATTRIBUTE_TYPE, element);
 
         location = StgVector2Utils.parseFromString(attrLocation.Value);
         type = attrType.Value;
     }
 
-    protected override StgXml writeToXml()
+    protected override XmlElement writeToXml(XmlDocument parentDocument)
     {
-        StgXml xml = new StgXml();
-        xml.CreateAttribute(ATTRIBUTE_TYPE, type);
-        xml.CreateAttribute(ATTRIBUTE_LOCATION, StgVector2Utils.parseToString((Vector2Int)location));
+        XmlElement retval = parentDocument.CreateElement(TAG_NAME);
+        retval.SetAttribute(ATTRIBUTE_LOCATION, StgVector2Utils.parseToString((Vector2Int)location));
+        retval.SetAttribute(ATTRIBUTE_TYPE, type);
 
-        return xml;
+        return retval;
     }
 }
